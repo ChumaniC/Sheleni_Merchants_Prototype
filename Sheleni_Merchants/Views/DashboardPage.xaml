@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Sheleni_Merchants.ViewModels"
+             x:Class="Sheleni_Merchants.Views.DashboardPage"
+             x:Name="availableServices"
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding LogoutCommand}">
+            <ToolbarItem.IconImageSource>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="Android">
+                        <FileImageSource File="logout.png" />
+                    </On>
+                    <On Platform="iOS">
+                        <FileImageSource File="logout.png" />
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.BindingContext>
+        <viewmodel:DashboardPageViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="WhiteSmoke">
+            <Frame BackgroundColor="Black" HeightRequest="200" Padding="0" Opacity="0.9">
+                <Image Source="spaza.png" 
+                       HeightRequest="200"
+                       Opacity="0.7"
+                       Aspect="AspectFill"/>
+            </Frame>
+
+            <!-- CollectionView to display service names -->
+            <CollectionView ItemsSource="{Binding Services}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                                     Span="3" />
+                    <!-- Display in rows of three -->
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <!-- Frame for each service name -->
+                            <Frame HasShadow="True"
+                       BorderColor="LightGray"
+                       CornerRadius="15"
+                       HeightRequest="40"
+                       WidthRequest="120"
+                       Margin="10">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference availableServices},
+                                                                 Path=BindingContext.ServiceFrameTappedCommand}"
+                                                  CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                <Image Source="{Binding ServiceIcon}"
+                            Aspect="AspectFit"
+                                       HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand"/>
+                            </Frame>
+
+                            <Label Text="{Binding ServiceName}" 
+                                    TextColor="Black"
+                                    FontSize="15"
+                                    HorizontalOptions="CenterAndExpand"
+                                    VerticalOptions="CenterAndExpand"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

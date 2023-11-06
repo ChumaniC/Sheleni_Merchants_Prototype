@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Sheleni_Merchants.ViewModels"
+             x:Class="Sheleni_Merchants.Views.InventoryPage"
+             x:Name="InventoryGroups"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <viewmodel:InventoryPageViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <!-- CollectionView to display item names -->
+            <!-- CollectionView to display subcategories -->
+            <CollectionView ItemsSource="{Binding InventoryGroups}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" />
+                    <!-- Display in rows of two -->
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <!-- Frame for each subcategory -->
+                            <Frame HasShadow="True" Padding="0"
+                                   BorderColor="LightGray" CornerRadius="15" HeightRequest="100" WidthRequest="100" Margin="10">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference InventoryGroups}, Path=BindingContext.SubcategoryFrameTappedCommand}" CommandParameter="{Binding .}" />
+                                </Frame.GestureRecognizers>
+                                <Image Source="{Binding Items[0].SubcategoryIcon}" Aspect="Fill" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                            </Frame>
+
+                            <Label Text="{Binding Subcategory}" TextColor="DarkGray" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

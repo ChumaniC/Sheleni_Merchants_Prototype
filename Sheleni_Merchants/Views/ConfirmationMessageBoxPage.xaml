@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<rg:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:rg="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+              xmlns:viewmodel="clr-namespace:Sheleni_Merchants.ViewModels"
+             x:Class="Sheleni_Merchants.Views.ConfirmationMessageBoxPage">
+    
+    <ContentPage.BindingContext>
+        <viewmodel:ConfirmationMessageBoxViewModel />
+    </ContentPage.BindingContext>
+    <Frame BackgroundColor="Transparent">
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding MainFrameTappedCommand}" />
+        </Frame.GestureRecognizers>
+        <Grid HeightRequest="265" VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Frame Grid.RowSpan="2"
+               HeightRequest="200"
+               WidthRequest="200"
+               CornerRadius="50"
+               VerticalOptions="Center"
+               BackgroundColor="White"
+               Padding="20, 0"
+               Margin="20">
+                <Grid VerticalOptions="FillAndExpand"
+                  HorizontalOptions="FillAndExpand">
+                    <Image Source="question.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Start"
+                       Aspect="Fill"
+                       HeightRequest="50"
+                       WidthRequest="50"></Image>
+                    <StackLayout Spacing="10"
+                             VerticalOptions="CenterAndExpand"
+                             HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding Title}"
+                           FontSize="25"
+                           FontAttributes="Bold"
+                           TextColor="DarkSlateGray"
+                           HorizontalTextAlignment="Center"></Label>
+                        <Label Text="{Binding Message}"
+                       FontSize="15"
+                       TextColor="#363636"
+                       HorizontalTextAlignment="Center"></Label>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+            <StackLayout Grid.Row="1" Spacing="10" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <Button x:Name="btnNo"
+                    Text="No"
+                    TextColor="White"
+                    Margin="20"
+                    FontSize="30"
+                    BackgroundColor="Salmon"
+                    CornerRadius="30"
+                    HorizontalOptions="Start"
+                    VerticalOptions="CenterAndExpand"
+                    Clicked="OnNoButtonClicked"></Button>
+                <Button x:Name="btnYes"
+                    Text="Yes"
+                    TextColor="White"
+                    Margin="20"
+                    FontSize="30"
+                    BackgroundColor="DarkSlateGray"
+                    CornerRadius="30"
+                    HorizontalOptions="End"
+                    VerticalOptions="CenterAndExpand"
+                    Clicked="OnYesButtonClicked"></Button>
+            </StackLayout>
+        </Grid>
+    </Frame>
+</rg:PopupPage>

@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Sheleni_Merchants.ViewModels" 
+             xmlns:converters="clr-namespace:Sheleni_Merchants.Converters"
+             x:Class="Sheleni_Merchants.Views.AirtimeAndDataPage"
+             x:Name="airtimeAndData"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <viewmodels:AirtimeAndDataPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:OrBooleanToVisibilityConverter x:Key="OrBooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Margin="10,10,10,0" BackgroundColor="WhiteSmoke">
+            <Label Text="Select a bundle"
+                   FontAttributes="Bold"
+                   FontSize="Title"
+                VerticalOptions="StartAndExpand" 
+                HorizontalOptions="CenterAndExpand" 
+                   TextColor="DarkGray"/>
+
+            <!-- Radio Buttons for Airtime and Data -->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="5,5,5,0">
+                <Label Text="Airtime" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"  TextColor="DarkGray"></Label>
+                <RadioButton x:Name="airtimeRadioButton" IsChecked="{Binding IsAirtimeSelected, Mode=TwoWay}"/>
+                <Label Text="Data" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" TextColor="DarkGray"></Label>
+                <RadioButton x:Name="dataRadioButton" IsChecked="{Binding IsDataSelected, Mode=TwoWay}"/>
+            </StackLayout>
+
+            <!-- Dropdowns -->
+            <StackLayout x:Name="dropdownsStackLayout" 
+                         Margin="5,5,5,0" Orientation="Horizontal">
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsAirtimeSelected}"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger TargetType="StackLayout"
+                                 Binding="{Binding IsDataSelected}"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+                <Frame IsVisible="True"
+                       HasShadow="True"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="StartAndExpand"
+                       x:Name="airtimeTypePickerFrame"
+                       Padding="2">
+                    <Picker x:Name="airtimeTypePicker" 
+                            ItemsSource="{Binding AirtimeTypes}" 
+                            SelectedItem="{Binding SelectedAirtimeType}"
+                            Title="Bundle Type"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="StartAndExpand"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            TitleColor="DarkGray"
+                            TextColor="DarkGray"
+                            FontSize="Small"/>
+                </Frame>
+
+                <Frame IsVisible="True"
+                       HasShadow="True"
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="End"
+                       x:Name="frequencyPickerFrame"
+                       Padding="2">
+                    <Picker x:Name="frequencyPicker" 
+                            ItemsSource="{Binding Frequencies}" 
+                            SelectedItem="{Binding SelectedFrequency}"
+                            Title="Frequency"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="EndAndExpand"
+                            HorizontalTextAlignment="Start"
+                            VerticalTextAlignment="Start"
+                            TitleColor="DarkGray"
+                            TextColor="DarkGray"
+                            FontSize="Small"/>
+                </Frame>
+            </StackLayout>
+
+            <ListView x:Name="bundlesListView" ItemsSource="{Binding Bundles}" 
+          HasUnevenRows="True"
+          Margin="10,10,10,0">
+                <ListView.Triggers>
+                    <DataTrigger TargetType="ListView"
+                                 Binding="{Binding ShowListView, Converter={StaticResource OrBooleanToVisibilityConverter}}"
+                                 Value="True">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </ListView.Triggers>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Frame HasShadow="True"
+                            Padding="5"
+                            CornerRadius="5"
+                            HeightRequest="70">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding AddToCartCommand,
+                                            Source={RelativeSource
+                                            AncestorType={x:Type viewmodels:AirtimeAndDataPageViewModel}}}"
+                                    CommandParameter="{Binding .}"/>
+                                    </Frame.GestureRecognizers>
+                                    <StackLayout Orientation="Horizontal">
+                                        <StackLayout>
+                                            <Label Text="{Binding ItemName}" 
+                                                   FontAttributes="Bold"
+                                                   FontSize="Medium"
+                                                   TextColor="DarkGray"/>
+                                            <Label Text="{Binding Description}" 
+                                                   FontAttributes="Italic"
+                                                   FontSize="Small"
+                                                   TextColor="DarkGray"/>
+                                        </StackLayout>
+                                        <Frame 
+                                               Padding="0"
+                                               BackgroundColor="Orange"
+                                               HorizontalOptions="EndAndExpand"
+                                               WidthRequest="120"
+                                               HeightRequest="60">
+                                            <Label 
+                                            Text="{Binding Price, StringFormat='R{0}'}" 
+                                               FontAttributes="Bold"
+                                                FontSize="Medium"
+                                                TextColor="White"
+                                                HorizontalOptions="CenterAndExpand"
+                                                VerticalOptions="CenterAndExpand"></Label>
+                                        </Frame>
+                                    </StackLayout>
+                                </Frame>
+                            </Grid>
+
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Text="CHECKOUT"
+         FontSize="Small"
+         CornerRadius="20"
+         BackgroundColor="DarkOrange"
+         HorizontalOptions="CenterAndExpand"
+         VerticalOptions="CenterAndExpand"
+         Command="{Binding CheckoutCommand}"
+         Margin="10, 10,10, 10">
+            </Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

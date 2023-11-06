@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:Sheleni_Merchants.ViewModels" 
+             xmlns:model="clr-namespace:Sheleni_Merchants.Models"
+             x:Class="Sheleni_Merchants.Views.BuyPage"
+             x:DataType="viewmodels:BuyPageViewModel"
+             Title="{Binding Title}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem>
+            <ToolbarItem.IconImageSource>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="Android">
+                        <FileImageSource File="cart.png" />
+                    </On>
+                    <On Platform="iOS">
+                        <FileImageSource File="cart.png" />
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.BindingContext>
+        <viewmodels:BuyPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="WhiteSmoke">
+            <ListView CachingStrategy="RecycleElement"
+                      ItemsSource="{Binding Items}"
+                      HasUnevenRows="True"
+                      Margin="10,10,10,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Item">
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Frame HasShadow="True"
+                                       Padding="5"
+                                       CornerRadius="5"
+                                       HeightRequest="100">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding ItemIcon}"
+                                               WidthRequest="70"
+                                               HeightRequest="70"
+                                               Aspect="AspectFill">
+                                        </Image>
+                                        <StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label VerticalOptions="Center"
+                                                    HorizontalOptions="StartAndExpand"
+                                                FontSize="Small"
+                                                    FontAttributes="Bold"
+                                                Text="{Binding ItemName}"
+                                                       TextColor="DarkGray">
+                                                </Label>
+
+                                                <Label VerticalOptions="Center"
+                                                   HorizontalOptions="EndAndExpand"
+                                                   FontSize="Small"
+                                                   Text="{Binding Price}"
+                                                       TextColor="DarkGray">
+                                                </Label>
+                                            </StackLayout>
+                                            <Label VerticalOptions="End"
+                                                   HorizontalOptions="Start"
+                                               FontSize="Small"
+                                               Text="{Binding Description}"
+                                                   TextColor="DarkGray"></Label>
+                                            <Label VerticalOptions="End"
+                                                   HorizontalOptions="StartAndExpand"
+                                               FontSize="Small"
+                                               FontAttributes="Italic"
+                                               Text="{Binding Subcategory}"
+                                                   TextColor="DarkGray">
+                                            </Label>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" VerticalOptions="Center">
+
+                                            <Button  HorizontalOptions="EndAndExpand"
+                                                     VerticalOptions="Center"    
+                                               FontSize="Small"
+                                               Text="-"
+                                               TextColor="White"
+                                               WidthRequest="35"
+                                               HeightRequest="35"
+                                               CornerRadius="35"
+                                               BackgroundColor="Orange"
+                                                            Command="{Binding DecrementQuantityCommand,
+                                                            Source={RelativeSource
+                                                            AncestorType={x:Type viewmodels:BuyPageViewModel}}}"
+                                                    CommandParameter="{Binding .}">
+                                            </Button>
+                                            <Label HorizontalOptions="EndAndExpand"
+                                                     VerticalOptions="Center"
+                                               FontSize="Small"
+                                                   Text="{Binding CurrentQuantity}"
+                                                   TextColor="DarkGray">
+                                            </Label>
+                                            <Button VerticalOptions="Center"
+                                                HorizontalOptions="EndAndExpand"    
+                                                FontSize="Small"
+                                                Text="+"
+                                                    TextColor="White"
+                                                WidthRequest="35"
+                                                HeightRequest="35"
+                                                CornerRadius="35"
+                                                    BackgroundColor="OrangeRed"
+                                                        Command="{Binding IncrementQuantityCommand,
+                                                Source={RelativeSource
+                                                AncestorType={x:Type viewmodels:BuyPageViewModel}}}"
+                                                        CommandParameter="{Binding .}">
+                                            </Button>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </Frame>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Button Text="CHECKOUT"
+                    FontSize="Small"
+                    CornerRadius="20"
+                    BackgroundColor="DarkOrange"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    Command="{Binding CheckoutCommand}"
+                    Margin="10, 10,10, 10"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

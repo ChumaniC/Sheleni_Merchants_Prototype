@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Sheleni_Merchants.ViewModels"
+             x:Class="Sheleni_Merchants.Views.LoginPage"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <viewmodels:LoginPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Padding="10,20,10,20" VerticalOptions="FillAndExpand"
+                     HorizontalOptions="CenterAndExpand" 
+                     Spacing="20" 
+                     BackgroundColor="WhiteSmoke">
+
+            <StackLayout HorizontalOptions="Start" Orientation="Horizontal" Margin="40, 10, 0, 50">
+                <Image Source="Sheleni.png"
+                       HeightRequest="100"
+                       HorizontalOptions="StartAndExpand"
+                       VerticalOptions="Center"></Image>
+
+                <StackLayout>
+                    <Label Text="Sh'elo,"
+                       FontAttributes="Bold,Italic"
+                       FontSize="40"
+                       TextColor="OrangeRed"
+                       HorizontalOptions="Start"
+                       VerticalOptions="EndAndExpand">
+                    </Label>
+
+                    <Label Text="welcome to Sheleni"
+                           FontSize="Medium"
+                           HorizontalOptions="Start"
+                           VerticalOptions="StartAndExpand"
+                           TextColor="DarkGray"></Label>
+                </StackLayout>
+            </StackLayout>
+            <Frame HasShadow="True"
+                   CornerRadius="10">
+                
+                <StackLayout Spacing="20">
+                    <Label FontAttributes="Bold" 
+                    Text="Enter your cellphone number to login"
+                           TextColor="OrangeRed"
+                    FontSize="Medium"
+                    Margin="0, 20, 0, 0">
+                    </Label>
+                    
+                    <StackLayout Orientation="Horizontal" Spacing="5">
+                        <Frame Padding="2"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               CornerRadius="10">
+                            
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="call.png"
+                                Aspect="AspectFit"
+                                HeightRequest="30"
+                                WidthRequest="30"
+                                HorizontalOptions="Start">
+
+                                </Image>
+                                <Entry Placeholder="Phone Number"
+                                       PlaceholderColor="DarkGray"
+                                       TextColor="DarkGray"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalTextAlignment="Start"
+                                VerticalTextAlignment="Center"
+                                Text="{Binding PhoneNumber, Mode=TwoWay}">
+
+                                </Entry>
+                            </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                    <Button VerticalOptions="Center"
+         Text="Login" 
+         FontSize="Small"
+         FontAttributes="Bold"
+         BackgroundColor="OrangeRed"
+         Command="{Binding LoginCommand}"
+         CornerRadius="40"
+         Padding="15"/>
+
+                    <Button VerticalOptions="Center"
+ Text="Register" 
+         FontSize="Small"
+         TextColor="OrangeRed"
+         FontAttributes="Bold"
+         BackgroundColor="LightGray"
+ Command="{Binding RegisterCommand}"
+ CornerRadius="40"
+ Padding="15"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

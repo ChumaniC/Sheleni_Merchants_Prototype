@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Sheleni_Merchants.Views.SplashPage"
+             Shell.TabBarIsVisible="False"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="#EF4720">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Splash image -->
+            <Image Source="splash.png" Grid.Row="0" HeightRequest="400"/>
+
+            <!-- Additional UI elements below the Splash image -->
+            <StackLayout Grid.Row="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" BackgroundColor="#EF4720">
+                <Label Text="from"
+                       TextColor="White"
+                       FontSize="Large"
+                       Margin="5"
+                       HorizontalOptions="CenterAndExpand"></Label>
+                <Image Source="nulysis.png"
+                       HeightRequest="50"
+                       Margin="0, 0, 0, 30"></Image>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
