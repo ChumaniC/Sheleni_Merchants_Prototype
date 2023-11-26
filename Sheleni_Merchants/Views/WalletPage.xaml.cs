@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Prism.Navigation;
+using Sheleni_Merchants.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +14,10 @@ namespace Sheleni_Merchants.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class WalletPage : ContentPage
 	{
-		public WalletPage ()
+        WalletPageViewModel viewModel;
+        public WalletPage ()
 		{
 			InitializeComponent ();
 		}
-	}
+    }
 }

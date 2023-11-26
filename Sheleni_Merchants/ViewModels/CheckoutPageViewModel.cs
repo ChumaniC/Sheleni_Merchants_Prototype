@@ -17,6 +17,8 @@ namespace Sheleni_Merchants.ViewModels
         public ICommand ProceedToPaymentCommand { get; }
         public ObservableCollection<Item> ItemsInCart { get; set; }
 
+        public ICommand NavigateToPayAndBuyCommand { get; }
+
         public ICommand CheckoutItemFrameTappedCommand { get; }
 
         public CheckoutPageViewModel()
@@ -32,11 +34,34 @@ namespace Sheleni_Merchants.ViewModels
 
             CheckoutItemFrameTappedCommand = new MvvmHelpers.Commands.Command<Item>(OnCheckoutItemFrameTapped);
 
+            NavigateToPayAndBuyCommand = new MvvmHelpers.Commands.Command(NavigateToPayAndBuy);
+
             TotalAmountDue = CalculateTotalAmount(new ObservableCollection<Item>(itemsInCart));
 
             ProceedToPaymentCommand = new MvvmHelpers.Commands.Command(ProceedToPayment);
 
             LoadSelectedItems();
+        }
+        private async void NavigateToPayAndBuy()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new PayAndBuyPage());
+        }
+
+
+        private int merchantId;
+
+        public int MerchantId
+        {
+            get { return merchantId; }
+            set { SetProperty(ref merchantId, value); }
+        }
+
+        private string merchantName;
+
+        public string MerchantName
+        {
+            get { return merchantName; }
+            set { SetProperty(ref merchantName, value); }
         }
 
         // After an item is removed from the checkout
@@ -112,6 +137,8 @@ namespace Sheleni_Merchants.ViewModels
 
             // Pass the purchased items and total price to the RequestToPayPage
             var requestToPayPageViewModel = new RequestToPayPageViewModel(ItemsInCart, TotalAmountDue);
+            requestToPayPageViewModel.MerchantId = MerchantId;
+            requestToPayPageViewModel.MerchantName = MerchantName;
             var requestToPayPage = new RequestToPayPage(requestToPayPageViewModel);
 
             // Navigate to the RequestToPayPage
@@ -131,9 +158,9 @@ namespace Sheleni_Merchants.ViewModels
             SaveSelectedItems();
         }
 
-        public double TotalAmountDue { get; private set; }
+        public decimal TotalAmountDue { get; private set; }
 
-        private double CalculateTotalAmount(ObservableCollection<Item> itemsInCart)
+        private decimal CalculateTotalAmount(ObservableCollection<Item> itemsInCart)
         {
             try
             {
@@ -141,7 +168,7 @@ namespace Sheleni_Merchants.ViewModels
             }
             catch (Exception ex)
             {
-                return 0.0;
+                return Convert.ToDecimal(0.00);
             }
         }
 
@@ -153,7 +180,7 @@ namespace Sheleni_Merchants.ViewModels
             }
             catch (Exception ex)
             {
-                TotalAmountDue = 0.0;
+                TotalAmountDue = Convert.ToDecimal(0.00);
             }
             // Notify the UI that the TotalAmountDue property has changed
             OnPropertyChanged(nameof(TotalAmountDue));

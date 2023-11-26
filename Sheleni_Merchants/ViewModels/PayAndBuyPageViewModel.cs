@@ -26,6 +26,22 @@ namespace Sheleni_Merchants.ViewModels
             LoadServiceNamesAsync();
         }
 
+        private int merchantId;
+
+        public int MerchantId
+        {
+            get { return merchantId; }
+            set { SetProperty(ref merchantId, value); }
+        }
+
+        private string merchantName;
+
+        public string MerchantName
+        {
+            get { return merchantName; }
+            set { SetProperty(ref merchantName, value); }
+        }
+
         private PayAndBuyServices selectedService;
 
         public PayAndBuyServices SelectedService
@@ -50,7 +66,12 @@ namespace Sheleni_Merchants.ViewModels
                 switch (selectedService.ServiceName.ToLower())
                 {
                     case "airtime":
-                        pageToNavigate = new AirtimeAndDataPage();
+                        var airtimeAndDataViewModel = new AirtimeAndDataPageViewModel
+                        {
+                            MerchantId = MerchantId,
+                            MerchantName = MerchantName,
+                        };
+                        pageToNavigate = new AirtimeAndDataPage { BindingContext = airtimeAndDataViewModel };
                         break;
 
                     case "bills":
@@ -62,7 +83,12 @@ namespace Sheleni_Merchants.ViewModels
                         break;
 
                     case "groceries":
-                        pageToNavigate = new BuyPage();
+                        var buyViewModel = new BuyPageViewModel
+                        {
+                            MerchantId = MerchantId,
+                            MerchantName = MerchantName
+                        };
+                        pageToNavigate = new BuyPage { BindingContext = buyViewModel };
                         break;
                     // Add more cases for other services as needed
                     default:

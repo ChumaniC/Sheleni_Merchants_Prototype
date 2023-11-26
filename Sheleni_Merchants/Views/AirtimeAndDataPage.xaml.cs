@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.CommunityToolkit.UI.Views.Options;
+using Sheleni_Merchants.ViewModels;
 
 namespace Sheleni_Merchants.Views
 {
@@ -16,5 +19,23 @@ namespace Sheleni_Merchants.Views
 		{
 			InitializeComponent ();
 		}
-	}
+
+        public string SelectedBundle { get; set; }
+
+        async public void Frame_Clicked(object sender, EventArgs e)
+        {
+            ToastOptions toastOptions = new ToastOptions
+            {
+                MessageOptions = new MessageOptions()
+                {
+                    Foreground = Color.White,
+                    Message = "Bundle added to cart",
+                },
+                BackgroundColor = Color.Green,
+                Duration = TimeSpan.FromSeconds(2)
+            };
+
+            await this.DisplayToastAsync(toastOptions);
+        }
+    }
 }

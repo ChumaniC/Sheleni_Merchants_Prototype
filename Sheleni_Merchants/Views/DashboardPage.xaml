@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Sheleni_Merchants.ViewModels"
+             xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Class="Sheleni_Merchants.Views.DashboardPage"
              x:Name="availableServices"
              Title="{Binding Title}">
@@ -26,13 +28,52 @@
     
     <ContentPage.Content>
         <StackLayout BackgroundColor="WhiteSmoke">
-            <Frame BackgroundColor="Black" HeightRequest="200" Padding="0" Opacity="0.9">
-                <Image Source="spaza.png" 
-                       HeightRequest="200"
-                       Opacity="0.7"
-                       Aspect="AspectFill"/>
-            </Frame>
-
+            <pancake:PancakeView HeightRequest="350" 
+                                 Padding="0"
+                                 CornerRadius="50, 150, 40, 40">
+                <Grid HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand">
+                    <cv:CarouselViewControl x:Name="cvSheleni"
+                                            ShowIndicators="True"
+                                            IndicatorsShape="Circle"
+                                            IndicatorsTintColor="Orange"
+                                            CurrentPageIndicatorTintColor="OrangeRed"
+                                            Orientation="Horizontal"
+                                            InterPageSpacing="0"
+                                            ItemsSource="{Binding SheleniDashboardCarouselItems}"
+                                            VerticalOptions="FillAndExpand"
+                                            HorizontalOptions="FillAndExpand"
+                                            AnimateTransition="True"
+                                            BackgroundColor="Black">
+                        <cv:CarouselViewControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalOptions="FillAndExpand">
+                                    <Frame BackgroundColor="Black" Padding="0" 
+                                           Opacity="0.5">
+                                        <Image Source="{Binding ImageName}"
+                                           Aspect="Fill"
+                                           VerticalOptions="FillAndExpand"
+                                           HorizontalOptions="FillAndExpand"
+                                               BackgroundColor="Black"></Image>
+                                    </Frame>
+                                    <StackLayout Spacing="20"
+                                                 HorizontalOptions="Start"
+                                                 VerticalOptions="End"
+                                                 WidthRequest="300"
+                                                 Margin="20, 50">
+                                        <Label x:Name="CaptionTxt"
+                                                   Text="{Binding Message}"
+                                                   FontSize="50"
+                                                    FontAttributes="Bold,Italic"
+                                                   TextColor="OrangeRed"
+                                                   Margin="0, 0, 0, 0"></Label>
+                                    </StackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </cv:CarouselViewControl.ItemTemplate>
+                    </cv:CarouselViewControl>
+                </Grid>
+            </pancake:PancakeView>
             <!-- CollectionView to display service names -->
             <CollectionView ItemsSource="{Binding Services}">
                 <CollectionView.ItemsLayout>

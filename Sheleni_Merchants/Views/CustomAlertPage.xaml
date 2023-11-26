@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<rg:PopupPage xmlns:rg="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup" 
+               xmlns="http://xamarin.com/schemas/2014/forms"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:viewmodels="clr-namespace:Sheleni_Merchants.ViewModels" 
+              x:DataType="viewmodels:CustomAlertPageViewModel"
+              x:Class="Sheleni_Merchants.Views.CustomAlertPage">
+
+    <ContentPage.BindingContext>
+        <viewmodels:CustomAlertPageViewModel />
+    </ContentPage.BindingContext>
+
+    <Frame BackgroundColor="Transparent">
+        <Frame.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding MainFrameTappedCommand}" />
+        </Frame.GestureRecognizers>
+        <Grid HeightRequest="265" VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Frame Grid.RowSpan="3" 
+           HeightRequest="200" 
+           WidthRequest="200" 
+           CornerRadius="50" 
+           VerticalOptions="Center" 
+           BackgroundColor="White" 
+           Padding="20, 0" 
+           Margin="20">
+
+                <Grid VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand">
+
+                    <Image Source="{Binding Icon}" 
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Start" 
+                   Aspect="Fill" 
+                           WidthRequest="50" 
+                   HeightRequest="50"></Image>
+
+                    <StackLayout Spacing="10" 
+                         VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="CenterAndExpand">
+                        <Label x:Name="lblTitle"
+                       Text="{Binding Title}" 
+                       FontSize="25"
+                       FontAttributes="Bold"
+                       TextColor="DarkSlateGray"
+                       HorizontalTextAlignment="Center"></Label>
+                        <Label x:Name="lblMessage" 
+                    Text="{Binding Message}"
+                   FontSize="15" 
+                   TextColor="#363636"
+                   HorizontalTextAlignment="Center"></Label>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+            <Button Grid.Row="2"
+            Text="Okay" 
+            TextColor="White" 
+            Margin="20" FontSize="30" 
+            BackgroundColor="DarkSlateGray" 
+            CornerRadius="30"
+            Clicked="OnOkayButtonClicked"></Button>
+        </Grid>
+    </Frame>
+</rg:PopupPage>

@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Sheleni_Merchants.ViewModels"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             x:Class="Sheleni_Merchants.Views.EWalletPage"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <viewmodel:EWalletPageViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Margin="15">
+            <Label Text="From"
+                   FontAttributes="Bold"
+                   FontSize="Large"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start"
+                   Margin="10, 10, 10, 10"/>
+
+            <Frame HeightRequest="50"
+                   HasShadow="True"
+                   CornerRadius="15">
+                <StackLayout Orientation="Horizontal">
+                    <pancake:PancakeView CornerRadius="15"
+                                         WidthRequest="80">
+                        <pancake:PancakeView.BackgroundGradientStops>
+                            <pancake:GradientStopCollection>
+                                <pancake:GradientStop Color="Orange" Offset="0.29"></pancake:GradientStop>
+                                <pancake:GradientStop Color="OrangeRed" Offset="0.75"></pancake:GradientStop>
+                                <pancake:GradientStop Color="DarkOrange" Offset="1"></pancake:GradientStop>
+                            </pancake:GradientStopCollection>
+                        </pancake:PancakeView.BackgroundGradientStops>
+                        <StackLayout Spacing="0">
+                            <Image Source="Sheleni.png"
+                                   Aspect="AspectFit"
+                                   HeightRequest="35"
+                               HorizontalOptions="Start">
+                            </Image>
+
+                            <Label Text="SHELENI"
+                            HorizontalOptions="End"
+                            FontAttributes="Bold,Italic"
+                            FontSize="10"
+                                   Margin="0,0,10,10"
+                               TextColor="White">
+                            </Label>
+                        </StackLayout>
+                    </pancake:PancakeView>
+
+                    <StackLayout>
+                        <Label Text="Sheleni Wallet"
+                    FontSize="Small"></Label>
+
+                        <Label Text="{Binding Balance, StringFormat='R{0:N2}'}"
+                            FontSize="Medium"
+                        FontAttributes="Bold"></Label>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <Label Text="To"
+                   FontAttributes="Bold"
+                   FontSize="Large"
+                VerticalOptions="Start" 
+                HorizontalOptions="Start"
+                   Margin="10, 10, 10, 10"/>
+
+            <Frame HeightRequest="50"
+       HasShadow="True"
+       CornerRadius="15">
+                <StackLayout Orientation="Horizontal">
+                    <pancake:PancakeView BackgroundColor="WhiteSmoke"
+                             CornerRadius="10"
+                             WidthRequest="80">
+                        <Image Source="eWallet.png"></Image>
+                    </pancake:PancakeView>
+                    <Label Text="Send Money"
+                        FontSize="Medium"
+                           VerticalOptions="Center"
+                    FontAttributes="Bold">
+                    </Label>
+                </StackLayout>
+            </Frame>
+
+            <Label Text="Amount"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   Margin="0, 50, 0, 10"></Label>
+
+            <StackLayout Orientation="Horizontal" Spacing="5">
+                <Frame Padding="2"
+           HorizontalOptions="FillAndExpand"
+           VerticalOptions="CenterAndExpand"
+           CornerRadius="20"
+                       BackgroundColor="WhiteSmoke">
+
+                    <StackLayout Orientation="Horizontal">
+                        <Entry TextColor="Black"
+                               Placeholder=""
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="CenterAndExpand"
+            HorizontalTextAlignment="Start"
+            VerticalTextAlignment="Center"
+            Text="{Binding Amount, Mode=TwoWay}">
+
+                        </Entry>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+
+            <Label Text="Cellphone number"
+       FontAttributes="Bold"
+       FontSize="Medium"
+       Margin="0, 10, 0, 10"></Label>
+
+            <StackLayout Orientation="Horizontal" Spacing="5">
+                <Frame Padding="2"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="CenterAndExpand"
+                CornerRadius="20"
+                            BackgroundColor="WhiteSmoke">
+
+                                    <StackLayout Orientation="Horizontal">
+                                        <Entry TextColor="Black"
+                                               Placeholder=""
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalTextAlignment="Start"
+                    VerticalTextAlignment="Center"
+                    Text="{Binding PhoneNumber, Mode=TwoWay}">
+
+                        </Entry>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+
+            <Button VerticalOptions="EndAndExpand"
+                Text="Send" 
+                FontSize="Small"
+                FontAttributes="Bold"
+                BackgroundColor="OrangeRed"
+                Command="{Binding SendCommand}"
+                CornerRadius="40"
+                Padding="15"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

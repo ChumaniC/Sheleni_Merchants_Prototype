@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.Extensions;
 using Xamarin.CommunityToolkit.UI.Views.Options;
 using Xamarin.Forms;
 
@@ -112,11 +113,15 @@ namespace Sheleni_Merchants.ViewModels
 
         public IAsyncCommand CheckoutCommand { get; }
 
+        public ICommand NavigateToPayAndBuyCommand { get; }
+
         public AirtimeAndDataPageViewModel()
         {
             Title = "Airtime & Data Bundles";
 
             CheckoutCommand = new AsyncCommand(CheckoutAsync);
+
+            NavigateToPayAndBuyCommand = new MvvmHelpers.Commands.Command(NavigateToPayAndBuy);
 
             Bundles = new ObservableCollection<Item>();
 
@@ -125,13 +130,34 @@ namespace Sheleni_Merchants.ViewModels
             AddToCartCommand = new MvvmHelpers.Commands.Command<Item>(OnAddToCart);
         }
 
+        private async void NavigateToPayAndBuy()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new PayAndBuyPage());
+        }
+
+        private int merchantId;
+
+        public int MerchantId
+        {
+            get { return merchantId; }
+            set { SetProperty(ref merchantId, value); }
+        }
+
+        private string merchantName;
+
+        public string MerchantName
+        {
+            get { return merchantName; }
+            set { SetProperty(ref merchantName, value); }
+        }
+
         public List<Item> ItemsInCart { get; } = new List<Item>();
 
         private void OnAddToCart(Item selectedItem)
         {
             if (selectedItem != null && !string.IsNullOrEmpty(selectedItem.Price))
             {
-                if (double.TryParse(selectedItem.Price, out double priceValue))
+                if (decimal.TryParse(selectedItem.Price, out decimal priceValue))
                 {
                     var modifiedItem = new Item();
 
@@ -148,7 +174,6 @@ namespace Sheleni_Merchants.ViewModels
                     Application.Current.SavePropertiesAsync();
 
                     SelectedBundles.Add(modifiedItem);
-                    ShowGreenToast($"Item '{selectedItem.ItemName}' added to cart");
                 }
                 else
                 {
@@ -161,29 +186,13 @@ namespace Sheleni_Merchants.ViewModels
             }
         }
 
-        private void UpdateBundlesListView()
-        {
-            Bundles = new ObservableCollection<Item>(Bundles);
-        }
-
-        private async void ShowGreenToast(string message)
-        {
-            ToastOptions toastOptions = new ToastOptions
-            {
-                MessageOptions = new MessageOptions()
-                {
-                    Foreground = Color.White,
-                    Message = message
-                },
-                BackgroundColor = Color.Green
-            };
-        }
-
         private async Task CheckoutAsync()
         {
             if (ItemsInCart.Any())
             {
                 var checkoutPageViewModel = new CheckoutPageViewModel(ItemsInCart);
+                checkoutPageViewModel.MerchantId = MerchantId;
+                checkoutPageViewModel.MerchantName = MerchantName;
                 checkoutPageViewModel.SaveSelectedItems();
                 await Application.Current.MainPage.Navigation.PushAsync(new CheckoutPage(checkoutPageViewModel));
             }

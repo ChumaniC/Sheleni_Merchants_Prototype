@@ -1,4 +1,5 @@
-﻿using Sheleni_Merchants.Models;
+﻿using Prism.Navigation;
+using Sheleni_Merchants.Models;
 using Sheleni_Merchants.Services;
 using Sheleni_Merchants.Views;
 using System;
@@ -63,10 +64,11 @@ namespace Sheleni_Merchants.ViewModels
             {
                 using (SqlConnection connection = con.Sheleni_Db_Connection())
                 {
-                    string query = "SELECT COUNT(*) FROM Customer WHERE mobile_number = @mobile_number";
+                    string query = $"SELECT COUNT(*) FROM Sheleni_Users WHERE contact_number = @contact_number AND user_type = @user_type";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@mobile_number", phoneNumber);
+                        command.Parameters.AddWithValue("@contact_number", phoneNumber);
+                        command.Parameters.AddWithValue("@user_type", "customer");
 
                         int count = (int)command.ExecuteScalar(); // Execute the query
 
@@ -100,10 +102,11 @@ namespace Sheleni_Merchants.ViewModels
             {
                 using (SqlConnection connection = con.Sheleni_Db_Connection())
                 {
-                    string query = "SELECT COUNT(*) FROM Merchant WHERE contact_number = @contact_number";
+                    string query = "SELECT COUNT(*) FROM Sheleni_Users WHERE contact_number = @contact_number AND user_type = @user_type";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@contact_number", phoneNumber);
+                        command.Parameters.AddWithValue("@user_type", "merchant");
 
                         int count = (int)command.ExecuteScalar(); // Execute the query
 
@@ -169,6 +172,7 @@ namespace Sheleni_Merchants.ViewModels
             return customer;
         }
 
+
         // Retrieve merchant details
 
         public Merchant GetMerchantDetails(string phoneNumber)
@@ -230,14 +234,13 @@ namespace Sheleni_Merchants.ViewModels
         // Perform actions after successful merchant login
         private void HandleMerchantLogin(Merchant merchant)
         {
-            // Perform further actions after a successful merchant login
-            // For the prototype, you can navigate to the merchant's dashboard or perform other necessary actions
+            var dashboardViewModel = new DashboardPageViewModel
+            {
+                LoggedInUserId = merchant.MerchantId,
+                Username = merchant.Name
+            };
 
-            // For example, navigating to the merchant's dashboard page
-            // Make sure your navigation logic and page names match your application structure
-            // This code assumes that your navigation is within the Xamarin.Forms framework
-            // Replace "MerchantDashboardPage" with the actual name of your merchant's dashboard page
-            Application.Current.MainPage.Navigation.PushAsync(new DashboardPage());
+            Application.Current.MainPage.Navigation.PushAsync(new DashboardPage { BindingContext = dashboardViewModel });
         }
     }
 }

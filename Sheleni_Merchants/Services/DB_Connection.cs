@@ -10,7 +10,7 @@ namespace Sheleni_Merchants.Services
         public SqlConnection Sheleni_Db_Connection()
         {
             string srvrdbname = "Sheleni";
-            string srvrname = "172.20.10.5";
+            string srvrname = "172.20.10.9";
             string srvrusername = "developer";
             string srvrpassword = "%g1Dsesql&Gpjf6uPizB49q5JZ3NVquweW6$h8wxC";
 

@@ -15,13 +15,19 @@ namespace Sheleni_Merchants.ViewModels
         public ObservableCollection<InventoryGroup> InventoryGroups { get; set; }
         public ICommand SubcategoryFrameTappedCommand { get; }
 
+        public ObservableCollection<CarouselItems> CarouselItems { get; set; }
+
         public InventoryPageViewModel()
         {
             Title = "Inventory Category";
 
             InventoryGroups = new ObservableCollection<InventoryGroup>();
 
+            CarouselItems = new ObservableCollection<CarouselItems>();
+
             SubcategoryFrameTappedCommand = new MvvmHelpers.Commands.Command<InventoryGroup>(OnSubcategorySelected);
+
+            LoadCarouselImages();
 
             // Load service names when the ViewModel is constructed (you can do this differently based on your app's logic)
             try
@@ -32,6 +38,61 @@ namespace Sheleni_Merchants.ViewModels
             {
             }
         }
+
+        private void LoadCarouselImages()
+        {
+            try
+            {
+                // Open database connection
+                DB_Connection conn = new DB_Connection();
+                SqlConnection dbConn = conn.Sheleni_Db_Connection();
+
+                // Retrieve location names from database
+                string selectImageQuery = "SELECT * FROM dbo.InventoryMessages";
+                SqlCommand commandImage = new SqlCommand(selectImageQuery, dbConn);
+                SqlDataReader readerImage = commandImage.ExecuteReader();
+
+                string _imageName;
+                string _message;
+
+                // Retrieve Location Information
+                while (readerImage.Read())
+                {
+                    _imageName = readerImage["heading"].ToString();
+                    _message = readerImage["message"].ToString();
+
+                    CarouselItems.Add(new CarouselItems
+                    {
+                        ImageName = _imageName.ToLower() + ".png",
+                        Message = _message
+                    });
+                }
+                readerImage.Close();
+
+                dbConn.Close();
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., log or show an error message)
+            }
+        }
+
+        private int merchantId;
+
+        public int MerchantId
+        {
+            get { return merchantId; }
+            set { SetProperty(ref merchantId, value); }
+        }
+
+        private string merchantName;
+
+        public string MerchantName
+        {
+            get { return merchantName; }
+            set { SetProperty(ref merchantName, value); }
+        }
+
 
         private async void LoadInventoryDataAsync()
         {
@@ -82,7 +143,7 @@ namespace Sheleni_Merchants.ViewModels
                         existingGroup.Items.Add(new Item
                         {
                             // Fill the item details accordingly
-
+                            ItemID = (int)readerItem["ItemID"],
                             ItemName = readerItem["ItemName"].ToString(),
                             Quantity = Convert.ToInt32(readerItem["Quantity"]),
                             ItemIcon = readerItem["ItemName"].ToString().ToLower(),
@@ -100,7 +161,7 @@ namespace Sheleni_Merchants.ViewModels
                                 new Item
                                 {
                                     // Fill the item details accordingly
-
+                                    ItemID = (int)readerItem["ItemID"],
                                     ItemName = readerItem["ItemName"].ToString(),
                                     Quantity = Convert.ToInt32(readerItem["Quantity"]),
                                     ItemIcon = readerItem["ItemName"].ToString().ToLower(),

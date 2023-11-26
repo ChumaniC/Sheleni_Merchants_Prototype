@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodel="clr-namespace:Sheleni_Merchants.ViewModels"
+             xmlns:cv="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              x:Class="Sheleni_Merchants.Views.InventoryPage"
              x:Name="InventoryGroups"
              Title="{Binding Title}">
@@ -11,31 +13,86 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout>
-            <!-- CollectionView to display item names -->
-            <!-- CollectionView to display subcategories -->
-            <CollectionView ItemsSource="{Binding InventoryGroups}">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="2" />
-                    <!-- Display in rows of two -->
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout>
-                            <!-- Frame for each subcategory -->
-                            <Frame HasShadow="True" Padding="0"
-                                   BorderColor="LightGray" CornerRadius="15" HeightRequest="100" WidthRequest="100" Margin="10">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={x:Reference InventoryGroups}, Path=BindingContext.SubcategoryFrameTappedCommand}" CommandParameter="{Binding .}" />
-                                </Frame.GestureRecognizers>
-                                <Image Source="{Binding Items[0].SubcategoryIcon}" Aspect="Fill" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
-                            </Frame>
-
-                            <Label Text="{Binding Subcategory}" TextColor="DarkGray" FontSize="15" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+        <StackLayout BackgroundColor="WhiteSmoke">
+            <pancake:PancakeView HeightRequest="350" 
+                     Padding="0"
+                     CornerRadius="50, 40, 40, 150">
+                <Grid HorizontalOptions="FillAndExpand"
+          VerticalOptions="FillAndExpand">
+                    <cv:CarouselViewControl x:Name="cvSheleni"
+                                ShowIndicators="True"
+                                IndicatorsShape="Circle"
+                                IndicatorsTintColor="Orange"
+                                CurrentPageIndicatorTintColor="OrangeRed"
+                                Orientation="Horizontal"
+                                InterPageSpacing="0"
+                                ItemsSource="{Binding CarouselItems}"
+                                VerticalOptions="FillAndExpand"
+                                HorizontalOptions="FillAndExpand"
+                                AnimateTransition="True"
+                                BackgroundColor="Black">
+                        <cv:CarouselViewControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalOptions="FillAndExpand">
+                                    <Frame BackgroundColor="Black" Padding="0" 
+                               Opacity="0.5">
+                                        <Image Source="{Binding ImageName}"
+                               Aspect="Fill"
+                               VerticalOptions="FillAndExpand"
+                               HorizontalOptions="FillAndExpand"
+                                   BackgroundColor="Black"></Image>
+                                    </Frame>
+                                    <StackLayout Spacing="20"
+                                     HorizontalOptions="Start"
+                                     VerticalOptions="End"
+                                     WidthRequest="300"
+                                     Margin="20, 45">
+                                        <Label x:Name="CaptionTxt"
+                                       Text="{Binding Message}"
+                                       FontSize="45"
+                                        FontAttributes="Bold,Italic"
+                                       TextColor="OrangeRed"
+                                       Margin="0, 0, 0, 0"></Label>
+                                    </StackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </cv:CarouselViewControl.ItemTemplate>
+                    </cv:CarouselViewControl>
+                </Grid>
+            </pancake:PancakeView>
+            <StackLayout Margin="20, 20, 20, 0">
+                <!-- CollectionView to display item names -->
+                <!-- CollectionView to display subcategories -->
+                <CollectionView ItemsSource="{Binding InventoryGroups}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical" Span="2" />
+                        <!-- Display in rows of two -->
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout>
+                                <!-- Frame for each subcategory -->
+                                <Frame HasShadow="True" Padding="0"
+                           BorderColor="LightGray" CornerRadius="15" HeightRequest="200" WidthRequest="100" Margin="10, 20, 10, 10">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={x:Reference InventoryGroups},
+                                            Path=BindingContext.SubcategoryFrameTappedCommand}" CommandParameter="{Binding .}" />
+                                    </Frame.GestureRecognizers>
+                                    <Image Source="{Binding Items[0].SubcategoryIcon}" 
+                                               Aspect="Fill"
+                                WidthRequest="100"
+                                HeightRequest="100"/>
+                                </Frame>
+                                <Label Text="{Binding Subcategory}" TextColor="DarkGray" 
+                                FontSize="Medium" 
+                                HorizontalOptions="CenterAndExpand" 
+                                VerticalOptions="StartAndExpand"
+                                FontAttributes="Bold"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

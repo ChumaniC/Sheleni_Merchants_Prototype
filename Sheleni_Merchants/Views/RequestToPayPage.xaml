@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Sheleni_Merchants.ViewModels" 
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
              xmlns:zxcm="clr-namespace:ZXing.Common;assembly=zxing.portable"
              x:Class="Sheleni_Merchants.Views.RequestToPayPage"
+             x:Name="ScanItems"
              Title="{Binding Title}">
 
     <ContentPage.BindingContext>
@@ -21,7 +23,10 @@
                 HorizontalOptions="CenterAndExpand"
                    Margin="0,50,0,0"/>
 
-            <zxing:ZXingBarcodeImageView 
+            <pancake:PancakeView BackgroundColor="AliceBlue"
+                                 CornerRadius="65, 65, 65, 65">
+                <StackLayout>
+                    <zxing:ZXingBarcodeImageView 
                 IsVisible="True"
                 BarcodeFormat="QR_CODE"
                 BarcodeValue="{Binding QrCodeImage.BarcodeValue}"
@@ -29,16 +34,30 @@
                 WidthRequest="300"
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand">
-                <zxing:ZXingBarcodeImageView.BarcodeOptions>
-                    <zxcm:EncodingOptions Width="300" Height="300"></zxcm:EncodingOptions>
-                </zxing:ZXingBarcodeImageView.BarcodeOptions>
-            </zxing:ZXingBarcodeImageView>
+                        <zxing:ZXingBarcodeImageView.BarcodeOptions>
+                            <zxcm:EncodingOptions Width="300" Height="300"></zxcm:EncodingOptions>
+                        </zxing:ZXingBarcodeImageView.BarcodeOptions>
+                    </zxing:ZXingBarcodeImageView>
 
-            <!--<Button Text="PAY" Command="{Binding ExecutePaymentCommand}" 
-                    HorizontalOptions="CenterAndExpand" 
-                    VerticalOptions="End"
-                    BackgroundColor="Green"
-                    CornerRadius="20"/>-->
+                    <Frame CornerRadius="30"
+    BackgroundColor="DarkOrange"
+    HorizontalOptions="FillAndExpand"
+    VerticalOptions="End"
+    Margin="10, 10,10, 10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={x:Reference ScanItems},
+Path=BindingContext.ExecutePaymentCommand}" CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
+                        <Label Text="Simulate Scan" 
+                    FontSize="Large"
+                    FontAttributes="Bold,Italic"
+                    TextColor="White"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand">
+                        </Label>
+                    </Frame>
+                </StackLayout>
+            </pancake:PancakeView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

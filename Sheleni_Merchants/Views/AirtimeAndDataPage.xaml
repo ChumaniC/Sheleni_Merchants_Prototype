@@ -7,6 +7,21 @@
              x:Name="airtimeAndData"
              Title="{Binding Title}">
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Command="{Binding NavigateToPayAndBuyCommand}">
+            <ToolbarItem.IconImageSource>
+                <OnPlatform x:TypeArguments="ImageSource">
+                    <On Platform="Android">
+                        <FileImageSource File="cart.png" />
+                    </On>
+                    <On Platform="iOS">
+                        <FileImageSource File="cart.png" />
+                    </On>
+                </OnPlatform>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.BindingContext>
         <viewmodels:AirtimeAndDataPageViewModel />
     </ContentPage.BindingContext>
@@ -18,13 +33,14 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout Margin="10,10,10,0" BackgroundColor="WhiteSmoke">
+        <StackLayout BackgroundColor="WhiteSmoke">
             <Label Text="Select a bundle"
                    FontAttributes="Bold"
                    FontSize="Title"
                 VerticalOptions="StartAndExpand" 
                 HorizontalOptions="CenterAndExpand" 
-                   TextColor="DarkGray"/>
+                   TextColor="DarkGray"
+                   Margin="20"/>
 
             <!-- Radio Buttons for Airtime and Data -->
             <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Margin="5,5,5,0">
@@ -36,7 +52,7 @@
 
             <!-- Dropdowns -->
             <StackLayout x:Name="dropdownsStackLayout" 
-                         Margin="5,5,5,0" Orientation="Horizontal">
+                         Margin="15,5,15,0" Orientation="Horizontal">
                 <StackLayout.Triggers>
                     <DataTrigger TargetType="StackLayout"
                                  Binding="{Binding IsAirtimeSelected}"
@@ -53,6 +69,7 @@
                        HasShadow="True"
                        HorizontalOptions="FillAndExpand"
                        VerticalOptions="StartAndExpand"
+                       CornerRadius="15"
                        x:Name="airtimeTypePickerFrame"
                        Padding="2">
                     <Picker x:Name="airtimeTypePicker" 
@@ -72,6 +89,7 @@
                        HasShadow="True"
                        HorizontalOptions="FillAndExpand"
                        VerticalOptions="End"
+                       CornerRadius="15"
                        x:Name="frequencyPickerFrame"
                        Padding="2">
                     <Picker x:Name="frequencyPicker" 
@@ -103,14 +121,16 @@
                         <ViewCell>
                             <Grid Padding="10">
                                 <Frame HasShadow="True"
-                            Padding="5"
-                            CornerRadius="5"
-                            HeightRequest="70">
+                            Padding="10"
+                            CornerRadius="15"
+                            HeightRequest="70"
+                                       x:Name="CheckoutFrame">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding AddToCartCommand,
                                             Source={RelativeSource
                                             AncestorType={x:Type viewmodels:AirtimeAndDataPageViewModel}}}"
-                                    CommandParameter="{Binding .}"/>
+                                    CommandParameter="{Binding .}"
+                                                              Tapped="Frame_Clicked"/>
                                     </Frame.GestureRecognizers>
                                     <StackLayout Orientation="Horizontal">
                                         <StackLayout>
@@ -128,11 +148,12 @@
                                                BackgroundColor="Orange"
                                                HorizontalOptions="EndAndExpand"
                                                WidthRequest="120"
-                                               HeightRequest="60">
+                                               HeightRequest="60"
+                                            CornerRadius="15">
                                             <Label 
                                             Text="{Binding Price, StringFormat='R{0}'}" 
                                                FontAttributes="Bold"
-                                                FontSize="Medium"
+                                                FontSize="Large"
                                                 TextColor="White"
                                                 HorizontalOptions="CenterAndExpand"
                                                 VerticalOptions="CenterAndExpand"></Label>
@@ -145,16 +166,25 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
-            <Button Text="CHECKOUT"
-         FontSize="Small"
-         CornerRadius="20"
+            
+            
+            <Frame CornerRadius="30"
          BackgroundColor="DarkOrange"
-         HorizontalOptions="CenterAndExpand"
+         HorizontalOptions="FillAndExpand"
          VerticalOptions="CenterAndExpand"
-         Command="{Binding CheckoutCommand}"
          Margin="10, 10,10, 10">
-            </Button>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding Source={x:Reference airtimeAndData},
+     Path=BindingContext.CheckoutCommand}" CommandParameter="{Binding .}" />
+                </Frame.GestureRecognizers>
+                <Label Text="Checkout" 
+                FontSize="Large"
+                FontAttributes="Bold"
+                TextColor="White"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand">
+                </Label>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

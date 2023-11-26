@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             x:Class="Sheleni_Merchants.Views.ManageInventoryItemPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="WhiteSmoke">
+            <Grid VerticalOptions="Start"
+                  HeightRequest="500">
+
+                <Frame
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="Start"
+            Grid.Row="1"
+            Grid.Column="0"
+            Grid.RowSpan="2"
+                HeightRequest="200"
+                   Margin="0, 15, 0, 0"
+                   CornerRadius="20">
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout VerticalOptions="CenterAndExpand">
+                            <Label Text="Total Sales Today"
+                FontAttributes="Bold"
+                FontSize="Medium"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Center"></Label>
+
+                            <Label Text="R534,90"
+                FontAttributes="Bold"
+                FontSize="Large"
+                TextColor="ForestGreen"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Center"></Label>
+                        </StackLayout>
+
+                        <BoxView WidthRequest="2"
+              HeightRequest="120"
+              VerticalOptions="CenterAndExpand"
+              HorizontalOptions="Center"
+              BackgroundColor="Orange"
+              Margin="10, 0, 10, 0"></BoxView>
+
+                        <StackLayout>
+                            <StackLayout VerticalOptions="CenterAndExpand">
+                                <Label Text="Total Items"
+                FontAttributes="Bold"
+                FontSize="Medium"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Start"></Label>
+
+                                <Label Text="450 units"
+                FontSize="Small"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Center"></Label>
+                            </StackLayout>
+
+                            <StackLayout VerticalOptions="CenterAndExpand">
+                                <Label Text="Items In Transit"
+                FontAttributes="Bold"
+                FontSize="Medium"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Start"></Label>
+
+                                <Label Text="150 units"
+                FontSize="Small"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Center"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Top Frame -->
+                <pancake:PancakeView
+Grid.Row="0"
+Grid.Column="0"
+Grid.RowSpan="2"
+CornerRadius="100, 100, 100, 100"
+        HorizontalOptions="Center"
+        VerticalOptions="Start"
+        Padding="0"
+        Shadow="{pancake:DropShadow Color=Orange, Offset='0,10'}"
+        Margin="0, 20">
+                    <StackLayout Spacing="0">
+                        <Image Source="{Binding ItemIcon}"
+    Aspect="AspectFill"
+    WidthRequest="200"
+    HeightRequest="200"></Image>
+                    </StackLayout>
+                </pancake:PancakeView>
+            </Grid>
+
+            <StackLayout VerticalOptions="StartAndExpand" Margin="0, 0, 0, 30">
+                <Frame
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="Start"
+                    HeightRequest="200"
+                       Margin="0, 15, 0, 0"
+                       CornerRadius="20">
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout VerticalOptions="CenterAndExpand">
+                            <Label Text="Last Re-Stock Date"
+                            FontAttributes="Bold"
+                            FontSize="Medium"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="Center"></Label>
+
+                            <Label Text="13 Nov 2023"
+                            FontAttributes="Bold"
+                            FontSize="Large"
+                            TextColor="ForestGreen"
+                            HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="Center"></Label>
+                        </StackLayout>
+
+                        <BoxView WidthRequest="2"
+                          HeightRequest="150"
+                          VerticalOptions="CenterAndExpand"
+                          HorizontalOptions="Center"
+                          BackgroundColor="Orange"
+                          Margin="10, 0, 10, 0"></BoxView>
+
+                        <StackLayout>
+                            <StackLayout VerticalOptions="CenterAndExpand">
+                                <Label Text="Re-Stock Units" 
+                                FontAttributes="Bold"
+                                FontSize="Medium"
+                                HorizontalOptions="CenterAndExpand"
+                                VerticalOptions="Start"></Label>
+
+                                <Frame CornerRadius="5"
+                                       BackgroundColor="Orange"
+                                       VerticalOptions="EndAndExpand"
+                                       HorizontalOptions="FillAndExpand"
+                                       Padding="10">
+                                    <Frame.GestureRecognizers></Frame.GestureRecognizers>
+                                    <Label Text="Stock"
+                                           TextColor="White"
+                                           FontAttributes="Bold"
+                                           FontSize="Large"
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="CenterAndExpand"></Label>
+                                </Frame>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -33,8 +33,8 @@ namespace Sheleni_Merchants.Models
             }
         }
 
-        private double _currentPrice;
-        public double CurrentPrice
+        private decimal _currentPrice;
+        public decimal CurrentPrice
         {
             get { return _currentPrice; }
             set
@@ -50,7 +50,7 @@ namespace Sheleni_Merchants.Models
         private void CalculateCurrentPrice()
         {
             // Remove "R" and parse the Price
-            if (double.TryParse(Price.Replace("R", ""), out double priceValue))
+            if (decimal.TryParse(Price.Replace("R", ""), out decimal priceValue))
             {
                 CurrentPrice = priceValue * CurrentQuantity;
             }

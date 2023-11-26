@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodels="clr-namespace:Sheleni_Merchants.ViewModels" 
+             xmlns:viewmodels="clr-namespace:Sheleni_Merchants.ViewModels"
              x:Class="Sheleni_Merchants.Views.PayAndBuyPage"
              x:Name="availablePayAndBuyServices"
              Title="{Binding Title}">
@@ -12,7 +12,7 @@
 
     <ContentPage.Content>
         <StackLayout BackgroundColor="WhiteSmoke">
-            <ListView ItemsSource="{Binding PayAndBuyServices}" 
+            <ListView ItemsSource="{Binding PayAndBuyServices}"
       HasUnevenRows="True"
       Margin="10,10,10,0">
                 <ListView.ItemTemplate>
@@ -21,7 +21,7 @@
                             <Grid Padding="10">
                                 <Frame HasShadow="True"
                         Padding="5"
-                        CornerRadius="5"
+                        CornerRadius="15"
                         HeightRequest="70">
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding Source={x:Reference availablePayAndBuyServices},
@@ -38,15 +38,14 @@
                                             <Label Text="{Binding ServiceName}"
                                            FontSize="Large"
                                            FontAttributes="Bold"
-                                                   TextColor="DarkGray"/>
+                                                   TextColor="DarkGray" />
                                             <Label Text="{Binding ServiceDescription}"
                                            FontSize="Small"
-                                                   TextColor="DarkGray"/>
+                                                   TextColor="DarkGray" />
                                         </StackLayout>
                                     </StackLayout>
                                 </Frame>
                             </Grid>
-
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>

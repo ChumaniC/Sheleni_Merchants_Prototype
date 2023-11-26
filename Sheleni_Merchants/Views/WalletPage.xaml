@@ -1,12 +1,213 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Sheleni_Merchants.Views.WalletPage">
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:viewmodels="clr-namespace:Sheleni_Merchants.ViewModels" 
+             x:Class="Sheleni_Merchants.Views.WalletPage"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <viewmodels:WalletPageViewModel />
+    </ContentPage.BindingContext>
+    
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="WhiteSmoke">
+            <Grid VerticalOptions="Start"
+                  HeightRequest="550">
+                <!-- Bottom PancakeView -->
+                <pancake:PancakeView
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.RowSpan="2"
+                    BackgroundGradientStartPoint="0,0.25"
+                    BackgroundGradientEndPoint="0,1"
+                    CornerRadius="0, 0, 45, 45"
+                        HeightRequest="300">
+                    <pancake:PancakeView.BackgroundGradientStops>
+                        <pancake:GradientStopCollection>
+                            <pancake:GradientStop Color="OrangeRed" Offset="1"></pancake:GradientStop>
+                            <pancake:GradientStop Color="DarkOrange" Offset="0.29"></pancake:GradientStop>
+                            <pancake:GradientStop Color="Orange" Offset="0.75"></pancake:GradientStop>
+                        </pancake:GradientStopCollection>
+                    </pancake:PancakeView.BackgroundGradientStops>
+                    <StackLayout Spacing="0">
+                        <Label Text="Welcome Back,"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="Start"
+                           Margin="10"
+                           FontSize="Small"
+                               TextColor="White">
+                        </Label>
+                        <StackLayout Orientation="Horizontal" Margin="10, 5, 5, 5">
+                            <Image Source="shopwhite.png"
+                                   Aspect="AspectFit"
+                                   HeightRequest="20"
+                                   WidthRequest="20"></Image>
+
+                            <Label Text="{Binding WalletUsername}"
+                               HorizontalOptions="StartAndExpand"
+                               VerticalOptions="Start"
+                                   FontAttributes="Bold,Italic"
+                               Margin="10"
+                               FontSize="Large"
+                                   TextColor="White">
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                </pancake:PancakeView>
+
+                <!-- Top PancakeView -->
+                <pancake:PancakeView
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.RowSpan="2"
+                    BackgroundGradientStartPoint="0,0.25"
+                    BackgroundGradientEndPoint="0,1"
+                    Margin="20, 0, 20, 0"
+                    CornerRadius="25"
+                        HeightRequest="200">
+                    <pancake:PancakeView.BackgroundGradientStops>
+                        <pancake:GradientStopCollection>
+                            <pancake:GradientStop Color="Orange" Offset="0.29"></pancake:GradientStop>
+                            <pancake:GradientStop Color="OrangeRed" Offset="0.75"></pancake:GradientStop>
+                            <pancake:GradientStop Color="DarkOrange" Offset="1"></pancake:GradientStop>
+                        </pancake:GradientStopCollection>
+                    </pancake:PancakeView.BackgroundGradientStops>
+                    <pancake:PancakeView.Border>
+                        <pancake:Border Thickness="2">
+                            <pancake:Border.GradientStops>
+                                <pancake:GradientStopCollection>
+                                    <pancake:GradientStop Color="OrangeRed" Offset="1"></pancake:GradientStop>
+                                    <pancake:GradientStop Color="DarkOrange" Offset="0.29"></pancake:GradientStop>
+                                    <pancake:GradientStop Color="Orange" Offset="0.75"></pancake:GradientStop>
+                                </pancake:GradientStopCollection>
+                            </pancake:Border.GradientStops>
+                        </pancake:Border>
+                    </pancake:PancakeView.Border>
+                    <StackLayout Spacing="0">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Balance"
+                             HorizontalOptions="StartAndExpand"
+                                   FontAttributes="Bold"
+                             VerticalOptions="Start"
+                             Margin="15, 15, 0, 0"
+                             FontSize="Medium"
+                                   TextColor="White">
+                            </Label>
+
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="Sheleni.png"
+                               HeightRequest="35"
+                               HorizontalOptions="EndAndExpand"></Image>
+                                
+                                <Label Text="Sheleni"
+                                HorizontalOptions="End"
+                                FontAttributes="Bold,Italic"
+                                Margin="0, 0, 20, 0"
+                                FontSize="Medium"
+                                   TextColor="White">
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <Label Text="{Binding FormattedDate, StringFormat='Today {0}'}"
+                             HorizontalOptions="StartAndExpand"
+                             VerticalOptions="Start"
+                             Margin="15, 0, 0, 0"
+                             FontSize="Small"
+                               TextColor="White">
+                        </Label>
+
+                        <Label Text="{Binding Balance, StringFormat='R{0:N2}'}"
+                         HorizontalOptions="StartAndExpand"
+                               FontAttributes="Bold"
+                         VerticalOptions="Start"
+                         Margin="15, 30, 0, 0"
+                         FontSize="Large"
+                               TextColor="White">
+                        </Label>
+                        <Label Text="2% increase from last month"
+                         HorizontalOptions="StartAndExpand"
+                         VerticalOptions="Start"
+                         Margin="15, 0, 0, 0"
+                         FontSize="Small"
+                               TextColor="White">
+                        </Label>
+                    </StackLayout>
+                </pancake:PancakeView>
+            </Grid>
+
+            <StackLayout Margin="10">
+                <Label Text="Recent Transactions"
+                   FontSize="Medium"
+                   FontAttributes="Bold"
+                   HorizontalOptions="StartAndExpand">
+                </Label>
+
+
+                <ListView CachingStrategy="RecycleElement"
+                          ItemsSource="{Binding ReversedTransactionHistory}"
+                      HasUnevenRows="True"
+                      Margin="10,10,10,0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Padding="10">
+                                    <Frame HasShadow="True"
+                           Padding="5"
+                           CornerRadius="15"
+                           HeightRequest="80">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Image Source="{Binding TransactionIcon}"
+                                   WidthRequest="50"
+                                   HeightRequest="50"
+                                   Aspect="AspectFit"
+                                                   HorizontalOptions="Center">
+                                            </Image>
+                                            <StackLayout HorizontalOptions="CenterAndExpand">
+                                                <Label VerticalOptions="Start"
+                                        HorizontalOptions="StartAndExpand"
+                                    FontSize="Medium"
+                                        FontAttributes="Bold"
+                                    Text="{Binding TransactionType}"
+                                           TextColor="DarkGray">
+                                                    </Label>
+
+                                                <StackLayout HorizontalOptions="End">
+                                                    <pancake:PancakeView BackgroundColor="{Binding TransactionColour}"
+                                                      CornerRadius="20"
+                                                      WidthRequest="80">
+                                                        <Label HorizontalOptions="Center"
+                                                     FontSize="Small"
+                                                     Text="{Binding Amount, StringFormat='R{0:N2}'}"
+                                                         TextColor="White"
+                                                        FontAttributes="Bold">
+                                                        </Label>
+                                                    </pancake:PancakeView>
+                                                </StackLayout>
+                                                <StackLayout Orientation="Horizontal">
+                                                    <Label VerticalOptions="EndAndExpand"
+                                                            HorizontalOptions="Start"
+                                                        FontSize="Small"
+                                                        Text="{Binding TransactionDate, StringFormat='{0:dd/MM/yyyy}'}"
+                                                            TextColor="DarkGray"></Label>
+
+                                                    <Label VerticalOptions="EndAndExpand"
+                                                            HorizontalOptions="EndAndExpand"
+                                                        FontSize="Small"
+                                                        Text="{Binding TransactionTime, StringFormat='{0:hh\\:mm}', Mode=OneWay}"
+                                                            TextColor="DarkGray"></Label>
+                                                </StackLayout>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </Frame>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
         </StackLayout>
+
     </ContentPage.Content>
 </ContentPage>

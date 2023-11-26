@@ -1,4 +1,5 @@
-﻿using Rg.Plugins.Popup.Services;
+﻿using Prism.Navigation;
+using Rg.Plugins.Popup.Services;
 using Sheleni_Merchants.Models;
 using Sheleni_Merchants.Services;
 using Sheleni_Merchants.Views;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -23,6 +25,8 @@ namespace Sheleni_Merchants.ViewModels
 
             Services = new ObservableCollection<Service>();
 
+            SheleniDashboardCarouselItems = new ObservableCollection<CarouselItems>();
+
             ServiceFrameTappedCommand = new MvvmHelpers.Commands.Command<Service>(OnServiceSelected);
 
             // Initialize the LogoutCommand with a command that executes the logout logic
@@ -33,6 +37,62 @@ namespace Sheleni_Merchants.ViewModels
 
             // Load service names when the ViewModel is constructed (you can do this differently based on your app's logic)
             LoadServiceNamesAsync();
+            LoadDashboardImages();
+        }
+
+        public ObservableCollection<CarouselItems> SheleniDashboardCarouselItems { get; set; }
+
+        private void LoadDashboardImages()
+        {
+            try
+            {
+                // Open database connection
+                DB_Connection conn = new DB_Connection();
+                SqlConnection dbConn = conn.Sheleni_Db_Connection();
+
+                // Retrieve location names from database
+                string selectImageQuery = "SELECT * FROM dbo.DashboardMessages";
+                SqlCommand commandImage = new SqlCommand(selectImageQuery, dbConn);
+                SqlDataReader readerImage = commandImage.ExecuteReader();
+
+                string _imageName;
+                string _message;
+
+                // Retrieve Location Information
+                while (readerImage.Read())
+                {
+                    _imageName = readerImage["heading"].ToString();
+                    _message = readerImage["message"].ToString();
+
+                    SheleniDashboardCarouselItems.Add(new CarouselItems
+                    {
+                        ImageName = _imageName.ToLower() + ".png",
+                        Message = _message
+                    });
+                }
+                readerImage.Close();
+
+                dbConn.Close();
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (e.g., log or show an error message)
+            }
+        }
+
+        private string username;
+        public string Username
+        {
+            get { return username; }
+            set { SetProperty(ref username, value); }
+        }
+
+        private int loggedInUserId;
+
+        public int LoggedInUserId
+        {
+            get { return loggedInUserId; }
+            set { SetProperty(ref loggedInUserId, value); }
         }
 
         private Service selectedService;
@@ -67,47 +127,74 @@ namespace Sheleni_Merchants.ViewModels
 
                 Page pageToNavigate = null;
 
-                switch (selectedService.ServiceName.ToLower())
+                if (LoggedInUserId > 0)
                 {
-                    case "buy":
-                        pageToNavigate = new PayAndBuyPage();
-                        break;
+                    switch (selectedService.ServiceName.ToLower())
+                    {
+                        case "buy":
+                            var payAndBuyViewModel = new PayAndBuyPageViewModel
+                            {
+                                MerchantId = LoggedInUserId,
+                                MerchantName = Username
+                            };
+                            pageToNavigate = new PayAndBuyPage { BindingContext = payAndBuyViewModel };
+                            break;
 
-                    case "payment":
-                        pageToNavigate = new RequestToPayPage();
-                        break;
+                        case "payment":
+                            var paymentViewModel = new PaymentPageViewModel
+                            {
+                                MerchantId = LoggedInUserId,
+                                MerchantName = Username
+                            };
+                            pageToNavigate = new PaymentPage { BindingContext = paymentViewModel }; ;
+                            break;
 
-                    case "transfer":
-                        pageToNavigate = new TransferPage();
-                        break;
+                        case "transfer":
+                            pageToNavigate = new TransferPage();
+                            break;
 
-                    case "inventory":
-                        pageToNavigate = new InventoryPage();
-                        break;
+                        case "inventory":
+                            var inventoryViewModel = new InventoryPageViewModel
+                            {
+                                MerchantId = LoggedInUserId,
+                                MerchantName = Username
+                            };
+                            pageToNavigate = new InventoryPage { BindingContext = inventoryViewModel };
+                            break;
 
-                    case "deposit":
-                        pageToNavigate = new DepositPage();
-                        break;
+                        case "deposit":
+                            pageToNavigate = new DepositPage();
+                            break;
 
-                    case "login":
-                        pageToNavigate = new LoginPage();
-                        break;
+                        case "login":
+                            pageToNavigate = new LoginPage();
+                            break;
 
-                    case "statement":
-                        pageToNavigate = new StatementPage();
-                        break;
+                        case "statement":
+                            pageToNavigate = new StatementPage();
+                            break;
 
-                    case "wallet":
-                        pageToNavigate = new WalletPage();
-                        break;
+                        case "wallet":
+                            var walletViewModel = new WalletPageViewModel
+                            {
+                                OwnerId = LoggedInUserId,
+                                WalletUsername = Username
+                            };
+                            pageToNavigate = new WalletPage { BindingContext = walletViewModel };
+                            break;
 
-                    case "withdraw":
-                        pageToNavigate = new WithdrawPage();
-                        break;
-                    // Add more cases for other services as needed
-                    default:
-                        // Handle the case where no matching page is found
-                        break;
+                        case "withdraw":
+                            pageToNavigate = new WithdrawPage();
+                            break;
+                        // Add more cases for other services as needed
+                        default:
+                            // Handle the case where no matching page is found
+                            break;
+                    }
+                }
+                else
+                {
+                    pageToNavigate = new LoginPage();
                 }
 
                 if (pageToNavigate != null)
@@ -192,6 +279,12 @@ namespace Sheleni_Merchants.ViewModels
                 while (readerService.Read())
                 {
                     _serviceName = readerService["ServiceName"].ToString();
+
+                    if (LoggedInUserId > 0 && _serviceName == "login")
+                    {
+                        _serviceName = "";
+                    }
+
                     Services.Add(new Service
                     {
                         ServiceName = _serviceName,
